@@ -31,6 +31,14 @@ public class Controller {
         return Storage.getHoteller();
     }
 
+    public static void tilfoejServiceTilHotel(Hotel hotel, Service service) {
+        hotel.addService(service);
+    }
+
+    public static void fjernServiceFraHotel(Hotel hotel, Service service) {
+        hotel.removeService(service);
+    }
+
 
 
     //--------------------------------------------------------------------------------

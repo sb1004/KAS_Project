@@ -43,11 +43,11 @@ public class TilknytHotelWindow extends Stage {
         pane.setVgap(10);
         pane.setGridLinesVisible(false);
 
-        Label lblHotelNavn = new Label("Konferencer: ");
-        pane.add(lblHotelNavn, 1, 1);
+        Label lblKonferenceNavn = new Label("Konferencer: ");
+        pane.add(lblKonferenceNavn, 1, 1);
 
         lvwKonferencer = new ListView<>();
-        pane.add(lvwKonferencer, 3, 1, 1, 5);
+        pane.add(lvwKonferencer, 1, 2, 1, 5);
         lvwKonferencer.setPrefWidth(150);
         lvwKonferencer.setPrefHeight(150);
         lvwKonferencer.getItems().setAll(Controller.getKonferencer());
@@ -57,15 +57,15 @@ public class TilknytHotelWindow extends Stage {
 
 
         Button btnGem = new Button("Tilknyt Hotel");
-        pane.add(btnGem, 1, 6);
+        pane.add(btnGem, 1, 7);
         btnGem.setOnAction(event -> this.tilknytHotelAction());
 
         Button btnSlet = new Button("Fjern Hotel");
-        pane.add(btnSlet, 2, 6);
+        pane.add(btnSlet, 2, 7);
         btnSlet.setOnAction(event -> this.fjernHotelAction());
 
         Button btnExit = new Button("Exit");
-        pane.add(btnExit, 3, 6);
+        pane.add(btnExit, 3, 7);
         btnExit.setOnAction(event -> this.exitAction());
     }
 

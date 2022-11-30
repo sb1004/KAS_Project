@@ -183,6 +183,7 @@ public class AdmKonferencePane extends GridPane {
 
         Button btnTilknytService = new Button("Tilknyt Service");
         this.add(btnTilknytService, 3, 18);
+        btnTilknytService.setOnAction(event -> this.tilknytServiceAction());
 
     }
 
@@ -194,6 +195,14 @@ public class AdmKonferencePane extends GridPane {
         TilknytHotelWindow dia = new TilknytHotelWindow("Tilknyt Hotel", this.lvwHoteller.getSelectionModel().getSelectedItem());
         dia.showAndWait();
         updateListView();
+    }
+
+    public void tilknytServiceAction() {
+
+        TilknytServiceWindow dia = new TilknytServiceWindow("Tilknyt Service", this.lvwServices.getSelectionModel().getSelectedItem());
+        dia.showAndWait();
+        updateListView();
+
     }
 
 
