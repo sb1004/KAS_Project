@@ -179,6 +179,7 @@ public class AdmKonferencePane extends GridPane {
 
         Button btnOpdaterService = new Button("Opdater Service");
         this.add(btnOpdaterService, 2, 18);
+        btnOpdaterService.setOnAction(event -> this.opdaterServiceAction());
 
         Button btnTilknytService = new Button("Tilknyt Service");
         this.add(btnTilknytService, 3, 18);
@@ -203,6 +204,7 @@ public class AdmKonferencePane extends GridPane {
 
         Controller.createKonference(navn, adresse, pris, startDato, antalDage);
         updateListView();
+        rydFelter();
     }
 
     private void opdaterKonferenceAction() {
@@ -258,6 +260,7 @@ public class AdmKonferencePane extends GridPane {
 
         Controller.createHotel(navn, adresse, prisEnkelt, prisDouble);
         updateListView();
+        rydFelter();
     }
 
     private void opretServiceAction() {
@@ -267,6 +270,21 @@ public class AdmKonferencePane extends GridPane {
 
         Controller.createService(navn, pris);
         updateListView();
+        rydFelter();
 
+    }
+
+    private void rydFelter() {
+        txfKonferenceNavn.clear();
+        txfKonferenceAdresse.clear();
+        txfKonferencePris.clear();
+        txfAntalDage.clear();
+        txfHotelNavn.clear();
+        txfHotelAdresse.clear();
+        txfPrisFor1.clear();
+        txfPrisFor2.clear();
+        txfServiceNavn.clear();
+        txfServicePris.clear();
+        dpStart.setValue(null);
     }
 }

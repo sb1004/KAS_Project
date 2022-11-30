@@ -48,6 +48,7 @@ public class OpdaterHotelWindow extends Stage {
             txfHotelNavn = new TextField();
             pane.add(txfHotelNavn, 2, 1);
             txfHotelNavn.setEditable(true);
+            txfHotelNavn.setText(hotel.getNavn());
 
             Label lblHotelAdresse = new Label("Adresse: ");
             pane.add(lblHotelAdresse, 1, 2);
@@ -55,6 +56,7 @@ public class OpdaterHotelWindow extends Stage {
             txfHotelAdresse = new TextField();
             pane.add(txfHotelAdresse, 2, 2);
             txfHotelAdresse.setEditable(true);
+            txfHotelAdresse.setText(hotel.getAdresse());
 
             Label lblPrisFor1 = new Label("Pris for enkelt værelse: ");
             pane.add(lblPrisFor1, 1, 3);
@@ -62,6 +64,7 @@ public class OpdaterHotelWindow extends Stage {
             txfPrisFor1 = new TextField();
             pane.add(txfPrisFor1, 2, 3);
             txfPrisFor1.setEditable(true);
+            txfPrisFor1.setText(String.valueOf(hotel.getPrisEnkelt()));
 
             Label lblPrisFor2 = new Label("Pris for dobbelt værelse: ");
             pane.add(lblPrisFor2, 1, 4);
@@ -69,6 +72,7 @@ public class OpdaterHotelWindow extends Stage {
             txfPrisFor2 = new TextField();
             pane.add(txfPrisFor2, 2, 4);
             txfPrisFor2.setEditable(true);
+            txfPrisFor2.setText(String.valueOf(hotel.getPrisDouble()));
 
 
             Button btnGem = new Button("Gem Ændringer");
@@ -96,11 +100,13 @@ public class OpdaterHotelWindow extends Stage {
             double prisDouble = Double.parseDouble(txfPrisFor2.getText().trim());
 
             Controller.updateHotel(hotel, navn, adresse, prisEnkelt, prisDouble);
+            this.hide();
         }
 
         private void sletAction() {
             Hotel hotel = this.hotel;
             Controller.deleteHotel(hotel);
+            this.hide();
         }
 }
 

@@ -46,6 +46,7 @@ public class OpdaterServiceWindow extends Stage {
         txfServiceNavn = new TextField();
         pane.add(txfServiceNavn, 2, 1);
         txfServiceNavn.setEditable(true);
+        txfServiceNavn.setText(service.getNavn());
 
         Label lblServicePris = new Label("Pris for service: ");
         pane.add(lblServicePris, 1, 2);
@@ -53,13 +54,14 @@ public class OpdaterServiceWindow extends Stage {
         txfServicePris = new TextField();
         pane.add(txfServicePris, 2, 2);
         txfServicePris.setEditable(true);
+        txfServicePris.setText(String.valueOf(service.getPris()));
 
 
         Button btnGem = new Button("Gem Ændringer");
         pane.add(btnGem, 1, 3);
         btnGem.setOnAction(event -> this.gemAction());
 
-        Button btnSlet = new Button("Slet Konference");
+        Button btnSlet = new Button("Slet Service");
         pane.add(btnSlet, 2, 3);
         btnSlet.setOnAction(event -> this.sletAction());
 
@@ -80,6 +82,7 @@ public class OpdaterServiceWindow extends Stage {
         double pris = Double.parseDouble(txfServicePris.getText().trim());
 
         Controller.updateService(service, navn, pris);
+        this.hide();
 
     }
 
@@ -87,6 +90,7 @@ public class OpdaterServiceWindow extends Stage {
 
         Service service = this.service;
         Controller.deleteService(service);
+        this.hide();
     }
 
 }
