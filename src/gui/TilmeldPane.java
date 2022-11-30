@@ -169,6 +169,8 @@ public class TilmeldPane extends GridPane {
         txfCompanion.setEditable(chbCompanionYes.isSelected());
         txfCompanion.setDisable(!chbCompanionYes.isSelected());
     }
+
+    //lort
 /*
     public void registerAction() {
         String navn = txfFullName.getText().trim();
