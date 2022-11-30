@@ -57,6 +57,8 @@ public class Tilmelding {
     public LocalDate getAnkomstDato() {
         return ankomstDato;
     }
+    @Override
+    public String toString() { return navn + ", " + konference; }
 
     public void setAnkomstDato(LocalDate ankomstDato) {
         this.ankomstDato = ankomstDato;

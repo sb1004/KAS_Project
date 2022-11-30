@@ -50,17 +50,17 @@ public class KonferenceWindow extends Stage {
         pane.setGridLinesVisible(false);
 
         Button btnExit = new Button("Exit");
-        pane.add(btnExit,0,1);
+        pane.add(btnExit,2,3);
         btnExit.setOnAction(event -> this.exitAction());
 
         lvwUdflugter = new ListView<>();
-        pane.add(lvwUdflugter,0,0);
+        pane.add(lvwUdflugter,0,1);
         lvwUdflugter.getItems().setAll(konference.getUdflugter());
         lvwUdflugter.setPrefHeight(200);
         lvwUdflugter.setPrefWidth(200);
 
         lvwLedsagere = new ListView<>();
-        pane.add(lvwLedsagere,1,0);
+        pane.add(lvwLedsagere,1,1);
         lvwLedsagere.setPrefWidth(200);
         lvwLedsagere.setPrefHeight(200);
 

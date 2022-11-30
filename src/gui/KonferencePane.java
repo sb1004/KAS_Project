@@ -41,11 +41,11 @@ public class KonferencePane extends GridPane {
         lvwKonferencer.getSelectionModel().selectedItemProperty().addListener(listener);
 
         Button btnInfo = new Button("Mere info");
-        this.add(btnInfo,3,1);
+        this.add(btnInfo,1,2);
         btnInfo.setOnAction(event -> this.infoAction());
 
         Button btnTest = new Button("Update List");
-        this.add(btnTest,3,2);
+        this.add(btnTest,1,3);
         btnTest.setOnAction(event -> this.updateList());
     }
 
@@ -67,7 +67,7 @@ public class KonferencePane extends GridPane {
 
     public void infoAction(){
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
-        KonferenceWindow dia = new KonferenceWindow("Mere info", konference);
-        dia.showAndWait();
+        KonferenceWindow konferenceWindow = new KonferenceWindow("Mere info", konference);
+        konferenceWindow.showAndWait();
     }
 }
