@@ -60,6 +60,14 @@ public class Controller {
         return Storage.getKonferencer();
     }
 
+    public static void tilfoejHotelTilKonference(Konference konference, Hotel hotel) {
+        konference.addHotel(hotel);
+    }
+
+    public static void fjernHotelFraKonference(Konference konference, Hotel hotel) {
+        konference.removeHotel(hotel);
+    }
+
     public static ArrayList<String> getDeltagere(Konference konference) {
         ArrayList<String> deltagere = new ArrayList<>();
         for (Tilmelding tilmelding: konference.getTilmeldinger()) {

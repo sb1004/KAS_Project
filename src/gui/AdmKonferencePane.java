@@ -144,7 +144,7 @@ public class AdmKonferencePane extends GridPane {
 
         Button btnTilknytHotel = new Button("Tilknyt Hotel");
         this.add(btnTilknytHotel, 3, 13);
-        //btnTilknytHotel.setOnAction(event -> this.tilknytHotelAction());
+        btnTilknytHotel.setOnAction(event -> this.tilknytHotelAction());
 
 
 
@@ -188,12 +188,15 @@ public class AdmKonferencePane extends GridPane {
 
 
     // Metoder
-/*
+
     public void tilknytHotelAction() {
-        lvwKonferencer.getSelectionModel().getSelectedItem().addHotel(lvwHoteller.getSelectionModel().getSelectedItem());
+
+        TilknytHotelWindow dia = new TilknytHotelWindow("Tilknyt Hotel", this.lvwHoteller.getSelectionModel().getSelectedItem());
+        dia.showAndWait();
+        updateListView();
     }
 
- */
+
 
     private void opretKonferenceAction() {
         String navn = txfKonferenceNavn.getText().trim();
