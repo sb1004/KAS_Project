@@ -15,11 +15,9 @@ public class Udflugt {
     private double pris;
 
     //Link attribut til Ledsager
-
     private ArrayList<Ledsager> ledsagere = new ArrayList<>();
 
     // Skaber et udflugts objekt
-
     public Udflugt(String navn, LocalDate dato, double pris) {
         this.navn = navn;
         this.dato = dato;
@@ -27,7 +25,6 @@ public class Udflugt {
     }
 
     // Get og set for de simple attributter
-
     public String getNavn() {
         return navn;
     }
@@ -74,5 +71,4 @@ public class Udflugt {
             ledsager.removeUdflugt(this);
         }
     }
-
 }

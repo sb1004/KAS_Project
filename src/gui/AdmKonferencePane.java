@@ -4,6 +4,7 @@ import application.controller.Controller;
 import application.model.Hotel;
 import application.model.Konference;
 import application.model.Service;
+import application.model.Udflugt;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -27,13 +28,15 @@ public class AdmKonferencePane extends GridPane {
      */
 
 
-    private TextField txfKonferenceNavn, txfKonferenceAdresse, txfKonferencePris, txfAntalDage, txfHotelNavn, txfHotelAdresse, txfPrisFor1, txfPrisFor2, txfServiceNavn, txfServicePris;
+    private TextField txfKonferenceNavn, txfKonferenceAdresse, txfKonferencePris, txfAntalDage, txfHotelNavn, txfHotelAdresse, txfPrisFor1, txfPrisFor2, txfServiceNavn, txfServicePris, txfUdflugtNavn, txfUdflugtPris;
 
     private ListView<Hotel> lvwHoteller;
     private ListView<Service> lvwServices;
     private ListView<Konference> lvwKonferencer;
 
-    private DatePicker dpStart;
+    private ListView<Udflugt> lvwUdflugter;
+
+    private DatePicker dpStart, dpUdflugtStart;
 
 
     public AdmKonferencePane() {
@@ -167,23 +170,23 @@ public class AdmKonferencePane extends GridPane {
         // Textfields med information om service
 
         Label lblServiceNavn = new Label("Navn på service: ");
-        this.add(lblServiceNavn, 1, 14);
+        this.add(lblServiceNavn, 4, 1);
 
         txfServiceNavn = new TextField();
-        this.add(txfServiceNavn, 2, 14);
+        this.add(txfServiceNavn, 5, 1);
         txfServiceNavn.setEditable(true);
 
         Label lblServicePris = new Label("Pris for service: ");
-        this.add(lblServicePris, 1, 15);
+        this.add(lblServicePris, 4, 2);
 
         txfServicePris = new TextField();
-        this.add(txfServicePris, 2, 15);
+        this.add(txfServicePris, 5, 2);
         txfServicePris.setEditable(true);
 
         // Listview af oprettede services
 
         lvwServices = new ListView<>();
-        this.add(lvwServices, 3, 14, 1, 4);
+        this.add(lvwServices, 6, 1, 1, 4);
         lvwServices.setPrefWidth(150);
         lvwServices.setPrefHeight(150);
         lvwServices.getItems().setAll(Controller.getServices());
@@ -194,16 +197,67 @@ public class AdmKonferencePane extends GridPane {
         // Knapper med funktionalitet relaterende til service
 
         Button btnOpretService = new Button("Opret Service");
-        this.add(btnOpretService, 1, 18);
+        this.add(btnOpretService, 4, 6);
         btnOpretService.setOnAction(event -> this.opretServiceAction());
 
         Button btnOpdaterService = new Button("Opdater Service");
-        this.add(btnOpdaterService, 2, 18);
+        this.add(btnOpdaterService, 5, 6);
         btnOpdaterService.setOnAction(event -> this.opdaterServiceAction());
 
         Button btnTilknytService = new Button("Tilknyt Service");
-        this.add(btnTilknytService, 3, 18);
+        this.add(btnTilknytService, 6, 6);
         btnTilknytService.setOnAction(event -> this.tilknytServiceAction());
+
+        //--------------------------------------------------------------------------------
+        // Udflugt del af pane
+
+        // Textfields med information om udflugt
+
+        Label lblUdflugtNavn = new Label("Navn på udflugt: ");
+        this.add(lblUdflugtNavn, 4, 8);
+
+        txfUdflugtNavn = new TextField();
+        this.add(txfUdflugtNavn, 5, 8);
+        txfUdflugtNavn.setEditable(true);
+
+        Label lblUdflugtPris = new Label("Pris for udflugt: ");
+        this.add(lblUdflugtPris, 4, 9);
+
+        txfUdflugtPris = new TextField();
+        this.add(txfUdflugtPris, 5, 9);
+        txfUdflugtPris.setEditable(true);
+
+        Label lblUdflugtStartDato = new Label("Dato for udflugt: ");
+        this.add(lblUdflugtStartDato, 4, 10);
+
+        dpUdflugtStart = new DatePicker();
+        this.add(dpUdflugtStart, 5, 10);
+        dpUdflugtStart.setEditable(true);
+
+        // Listview af oprettede udflugter
+
+        lvwUdflugter = new ListView<>();
+        this.add(lvwUdflugter, 6, 11, 1, 4);
+        lvwUdflugter.setPrefWidth(150);
+        lvwUdflugter.setPrefHeight(150);
+        lvwUdflugter.getItems().setAll(Controller.getUdflugter());
+
+        ChangeListener<Udflugt> listener4 = (ov, oldHotel, newHotel) -> this.selectedUdflugtChanged();
+        lvwUdflugter.getSelectionModel().selectedItemProperty().addListener(listener4);
+
+        // Knapper med funktionalitet relaterende til service
+
+        Button btnOpretUdflugt = new Button("Opret Udflugt");
+        this.add(btnOpretUdflugt, 4, 11);
+        btnOpretUdflugt.setOnAction(event -> this.opretUdflugtAction());
+
+        Button btnOpdaterUdflugt = new Button("Opdater Udflugt");
+        this.add(btnOpdaterUdflugt, 5, 11);
+        btnOpdaterUdflugt.setOnAction(event -> this.opdaterUdflugtAction());
+
+        Button btnTilknytUdflugt = new Button("Tilknyt Udflugt");
+        this.add(btnTilknytUdflugt, 6, 11);
+        btnTilknytUdflugt.setOnAction(event -> this.tilknytUdflugtAction());
     }
 
     //--------------------------------------------------------------------------------
@@ -278,8 +332,34 @@ public class AdmKonferencePane extends GridPane {
         OpdaterServiceWindow dia = new OpdaterServiceWindow("Opdater Service", this.lvwServices.getSelectionModel().getSelectedItem());
         dia.showAndWait();
         updateListView();
-
     }
+
+    //--------------------------------------------------------------------------------
+
+    // Metoder til udflugt
+
+    private void opretUdflugtAction() {
+        String navn = txfUdlugtNavn.getText().trim();
+        double pris = Double.parseDouble(txfUdflugtPris.getText().trim());
+        LocalDate dato = dpUdflugtStart.getValue();
+
+        Controller.createUdflugt(navn, dato, pris);
+        updateListView();
+        rydFelter();
+    }
+
+    public void tilknytUdflugtAction() {
+        TilknytUdflugtWindow dia = new TilknytUdflugtWindow("Tilknyt Udflugt", this.lvwUdflugter.getSelectionModel().getSelectedItem());
+        dia.showAndWait();
+        updateListView();
+    }
+
+    private void opdaterUdflugtAction() {
+        OpdaterUdflugtWindow dia = new OpdaterUdflugtWindow("Opdater Udflugt", this.lvwUdflugter.getSelectionModel().getSelectedItem());
+        dia.showAndWait();
+        updateListView();
+    }
+
     //--------------------------------------------------------------------------------
 
     // Metoder til changelistener
@@ -296,6 +376,10 @@ public class AdmKonferencePane extends GridPane {
         this.updateControls();
     }
 
+    private void selectedUdflugtChanged() {
+        this.updateControls();
+    }
+
 
     public void updateListView() {
         lvwKonferencer.getItems().setAll(Controller.getKonferencer());
@@ -307,6 +391,7 @@ public class AdmKonferencePane extends GridPane {
         Hotel hotel = lvwHoteller.getSelectionModel().getSelectedItem();
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
         Service service = lvwServices.getSelectionModel().getSelectedItem();
+        Udflugt udflugt = lvwUdflugter.getSelectionModel().getSelectedItem();
     }
 
 
