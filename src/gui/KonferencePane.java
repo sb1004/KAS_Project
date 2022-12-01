@@ -7,12 +7,15 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import storage.Storage;
 
 public class KonferencePane extends GridPane {
     private ListView<Konference> lvwKonferencer;
     private ListView<String> lvwDeltagere;
+
+    private TextField txfKonferenceNavn, txfKonferenceAdresse, txfKonferencePris, txfAntalDage, txfstartDato;
 
     public KonferencePane() {
         this.setPadding(new Insets(20));
@@ -29,7 +32,7 @@ public class KonferencePane extends GridPane {
         lvwKonferencer.setPrefWidth(200);
         lvwKonferencer.getItems().setAll(Controller.getKonferencer());
 
-        Label lblDeltager = new Label("Deltagere");
+        Label lblDeltager = new Label("Deltagere på konferencen");
         this.add(lblDeltager, 2, 0);
 
         lvwDeltagere = new ListView<>();
@@ -47,6 +50,42 @@ public class KonferencePane extends GridPane {
         Button btnTest = new Button("Update List");
         this.add(btnTest,1,3);
         btnTest.setOnAction(event -> this.updateList());
+
+        Label lblKonferenceNavn = new Label("Konferencens navn:");
+        this.add(lblKonferenceNavn, 2, 2);
+
+        txfKonferenceNavn = new TextField();
+        this.add(txfKonferenceNavn, 2, 3);
+        txfKonferenceNavn.setEditable(false);
+
+        Label lblKonferenceAdresse = new Label("Konferencens adresse:");
+        this.add(lblKonferenceAdresse, 2, 4);
+
+        txfKonferenceAdresse = new TextField();
+        this.add(txfKonferenceAdresse, 2, 5);
+        txfKonferenceAdresse.setEditable(false);
+
+        Label lblKonferenceStartDato = new Label("Konferencens Startdato:");
+        this.add(lblKonferenceStartDato, 2, 6);
+
+        txfstartDato = new TextField();
+        this.add(txfstartDato, 2, 7);
+        txfstartDato.setEditable(false);
+
+        Label lblKonferenceAntalDage = new Label("Antal dage konferencen løber over:");
+        this.add(lblKonferenceAntalDage, 2, 8);
+
+        txfAntalDage = new TextField();
+        this.add(txfAntalDage, 2, 9);
+        txfAntalDage.setEditable(false);
+
+        Label lblKonferencePris = new Label("Konferencens pris:");
+        this.add(lblKonferencePris, 2, 10);
+
+        txfKonferencePris = new TextField();
+        this.add(txfKonferencePris, 2, 11);
+        txfKonferencePris.setEditable(false);
+
     }
 
 
@@ -62,6 +101,11 @@ public class KonferencePane extends GridPane {
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
         if (konference != null) {
             lvwDeltagere.getItems().setAll(Controller.getDeltagere(konference));
+            txfKonferenceNavn.setText(konference.getNavn());
+            txfKonferenceAdresse.setText(konference.getAdresse());
+            txfstartDato.setText(String.valueOf(konference.getStartdato()));
+            txfAntalDage.setText(String.valueOf(konference.getAntalDage()));
+            txfKonferencePris.setText(String.valueOf(konference.getPris()));
         }
     }
 

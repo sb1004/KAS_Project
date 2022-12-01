@@ -10,6 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
@@ -50,8 +51,11 @@ public class KonferenceWindow extends Stage {
         pane.setGridLinesVisible(false);
 
         Button btnExit = new Button("Exit");
-        pane.add(btnExit,2,3);
+        pane.add(btnExit,2,4);
         btnExit.setOnAction(event -> this.exitAction());
+
+        Label lblUdflugter = new Label("Udflugter: ");
+        pane.add(lblUdflugter, 0, 0);
 
         lvwUdflugter = new ListView<>();
         pane.add(lvwUdflugter,0,1);
@@ -59,19 +63,28 @@ public class KonferenceWindow extends Stage {
         lvwUdflugter.setPrefHeight(200);
         lvwUdflugter.setPrefWidth(200);
 
+        Label lblLedsagere = new Label("Ledsagere på udflugten:");
+        pane.add(lblLedsagere, 1, 0);
+
         lvwLedsagere = new ListView<>();
         pane.add(lvwLedsagere,1,1);
         lvwLedsagere.setPrefWidth(200);
         lvwLedsagere.setPrefHeight(200);
 
+        Label lblHoteller = new Label("Hoteller: ");
+        pane.add(lblHoteller, 0, 2);
+
         lvwHoteller = new ListView<>();
-        pane.add(lvwHoteller,0,2);
+        pane.add(lvwHoteller,0,3);
         lvwHoteller.getItems().setAll(konference.getHoteller());
         lvwHoteller.setPrefHeight(200);
         lvwHoteller.setPrefWidth(200);
 
+        Label lblHotelGaester = new Label("Gæsterne på hotellet: ");
+        pane.add(lblHotelGaester, 1, 2);
+
         lvwHotelGaester = new ListView<>();
-        pane.add(lvwHotelGaester,1,2);
+        pane.add(lvwHotelGaester,1,3);
         lvwHotelGaester.setPrefWidth(200);
         lvwHotelGaester.setPrefHeight(200);
 

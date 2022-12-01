@@ -77,6 +77,10 @@ public class Controller {
         konference.removeHotel(hotel);
     }
 
+    public  static void tilknytUdflugtTilKonference(Konference konference, Udflugt udflugt) { konference.addUdflugt(udflugt);}
+
+    public static void fjernUdflugtFraKonference(Konference konference, Udflugt udflugt) { konference.removeUdflugt(udflugt);}
+
     //--------------------------------------------------------------------------------
 
 

@@ -14,18 +14,21 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.time.LocalDate;
+
 public class OpdaterUdflugtWindow extends Stage {
 
 
     /*
-     * Et pop-up vindue der giver mulighed for at opdatere et allerede oprettet service objekt
+     * Et pop-up vindue der giver mulighed for at opdatere et allerede oprettet udflugt objekt
      */
 
-    public OpdaterUdflugtWindow(String title, Service service) {
+    public OpdaterUdflugtWindow(String title, Udflugt udflugt) {
         this.initStyle(StageStyle.UTILITY);
         this.initModality(Modality.APPLICATION_MODAL);
         this.setResizable(false);
-        this.service = service;
+
+        this.udflugt = udflugt;
 
         this.setTitle(title);
         GridPane pane = new GridPane();
@@ -36,6 +39,7 @@ public class OpdaterUdflugtWindow extends Stage {
     }
 
     private Udflugt udflugt;
+
 
     private TextField txfUdflugtNavn, txfUdflugtPris;
 
@@ -72,23 +76,21 @@ public class OpdaterUdflugtWindow extends Stage {
         dpUdflugtStart = new DatePicker();
         pane.add(dpUdflugtStart, 2, 3);
         dpUdflugtStart.setEditable(true);
-        //dpUdflugtStart.setValue();
-
-
+        dpUdflugtStart.setValue(udflugt.getDato());
 
 
         // Knapper der gør det muligt at gemme ændringer, slette objektet eller at lukke vinduet
 
         Button btnGem = new Button("Gem Ændringer");
-        pane.add(btnGem, 1, 3);
+        pane.add(btnGem, 1, 4);
         btnGem.setOnAction(event -> this.gemAction());
 
         Button btnSlet = new Button("Slet Service");
-        pane.add(btnSlet, 2, 3);
+        pane.add(btnSlet, 2, 4);
         btnSlet.setOnAction(event -> this.sletAction());
 
         Button btnExit = new Button("Exit");
-        pane.add(btnExit, 3, 3);
+        pane.add(btnExit, 3, 4);
         btnExit.setOnAction(event -> this.exitAction());
     }
 
@@ -100,17 +102,18 @@ public class OpdaterUdflugtWindow extends Stage {
     }
 
     private void gemAction() {
-        Service service = this.service;
-        String navn = txfServiceNavn.getText().trim();
-        double pris = Double.parseDouble(txfServicePris.getText().trim());
+        Udflugt udflugt = this.udflugt;
+        String navn = txfUdflugtNavn.getText().trim();
+        double pris = Double.parseDouble(txfUdflugtPris.getText().trim());
+        LocalDate dato = dpUdflugtStart.getValue();
 
-        Controller.updateService(service, navn, pris);
+        Controller.updateUdflugt(udflugt, navn, dato, pris);
         this.hide();
     }
 
     private void sletAction() {
-        Service service = this.service;
-        Controller.deleteService(service);
+        Udflugt udflugt = this.udflugt;
+        Controller.deleteUdflugt(udflugt);
         this.hide();
     }
 }

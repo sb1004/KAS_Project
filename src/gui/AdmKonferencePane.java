@@ -237,7 +237,7 @@ public class AdmKonferencePane extends GridPane {
         // Listview af oprettede udflugter
 
         lvwUdflugter = new ListView<>();
-        this.add(lvwUdflugter, 6, 11, 1, 4);
+        this.add(lvwUdflugter, 6, 8, 1, 5);
         lvwUdflugter.setPrefWidth(150);
         lvwUdflugter.setPrefHeight(150);
         lvwUdflugter.getItems().setAll(Controller.getUdflugter());
@@ -248,15 +248,15 @@ public class AdmKonferencePane extends GridPane {
         // Knapper med funktionalitet relaterende til service
 
         Button btnOpretUdflugt = new Button("Opret Udflugt");
-        this.add(btnOpretUdflugt, 4, 11);
+        this.add(btnOpretUdflugt, 4, 13);
         btnOpretUdflugt.setOnAction(event -> this.opretUdflugtAction());
 
         Button btnOpdaterUdflugt = new Button("Opdater Udflugt");
-        this.add(btnOpdaterUdflugt, 5, 11);
+        this.add(btnOpdaterUdflugt, 5, 13);
         btnOpdaterUdflugt.setOnAction(event -> this.opdaterUdflugtAction());
 
         Button btnTilknytUdflugt = new Button("Tilknyt Udflugt");
-        this.add(btnTilknytUdflugt, 6, 11);
+        this.add(btnTilknytUdflugt, 6, 13);
         btnTilknytUdflugt.setOnAction(event -> this.tilknytUdflugtAction());
     }
 
@@ -339,7 +339,7 @@ public class AdmKonferencePane extends GridPane {
     // Metoder til udflugt
 
     private void opretUdflugtAction() {
-        String navn = txfUdlugtNavn.getText().trim();
+        String navn = txfUdflugtNavn.getText().trim();
         double pris = Double.parseDouble(txfUdflugtPris.getText().trim());
         LocalDate dato = dpUdflugtStart.getValue();
 
@@ -347,6 +347,8 @@ public class AdmKonferencePane extends GridPane {
         updateListView();
         rydFelter();
     }
+
+
 
     public void tilknytUdflugtAction() {
         TilknytUdflugtWindow dia = new TilknytUdflugtWindow("Tilknyt Udflugt", this.lvwUdflugter.getSelectionModel().getSelectedItem());
