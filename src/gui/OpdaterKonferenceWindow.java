@@ -17,6 +17,10 @@ import java.time.LocalDate;
 
 public class OpdaterKonferenceWindow extends Stage {
 
+    /*
+     * Et pop-up vindue der giver mulighed for at opdatere et allerede oprettet konference objekt
+     */
+
     public OpdaterKonferenceWindow(String title, Konference konference) {
         this.initStyle(StageStyle.UTILITY);
         this.initModality(Modality.APPLICATION_MODAL);
@@ -42,6 +46,8 @@ public class OpdaterKonferenceWindow extends Stage {
         pane.setHgap(20);
         pane.setVgap(10);
         pane.setGridLinesVisible(false);
+
+        // Textfields med informationer om konference objektet - textfields henter informationer fra det allerede oprettede objekt og sætter disse ind.
 
         Label lblKonferenceNavn = new Label("Navn på konference: ");
         pane.add(lblKonferenceNavn, 1, 1);
@@ -75,7 +81,6 @@ public class OpdaterKonferenceWindow extends Stage {
         txfAntalDage.setEditable(true);
         txfAntalDage.setText(String.valueOf(konference.getAntalDage()));
 
-
         Label lblKonferencePris = new Label("Pris for konference: ");
         pane.add(lblKonferencePris, 1, 5);
 
@@ -83,6 +88,8 @@ public class OpdaterKonferenceWindow extends Stage {
         pane.add(txfKonferencePris, 2, 5);
         txfKonferencePris.setEditable(true);
         txfKonferencePris.setText(String.valueOf(konference.getPris()));
+
+        // Knapper der gør det muligt at gemme ændringer, slette objektet eller at lukke vinduet
 
 
         Button btnGem = new Button("Gem Ændringer");
@@ -97,6 +104,8 @@ public class OpdaterKonferenceWindow extends Stage {
         pane.add(btnExit, 3, 6);
         btnExit.setOnAction(event -> this.exitAction());
     }
+
+    // Metoder til knapperne
 
     private void exitAction(){
         this.hide();
@@ -113,7 +122,6 @@ public class OpdaterKonferenceWindow extends Stage {
         Controller.updateKonference(konference, navn, adresse, pris, startDato, antalDage);
 
         this.hide();
-
     }
 
     private void sletAction() {

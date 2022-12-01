@@ -16,6 +16,10 @@ import java.time.LocalDate;
 
 public class OpdaterHotelWindow extends Stage {
 
+    /*
+     * Et pop-up vindue der giver mulighed for at opdatere et allerede oprettet hotel objekt
+     */
+
 
     public OpdaterHotelWindow(String title, Hotel hotel) {
         this.initStyle(StageStyle.UTILITY);
@@ -41,6 +45,8 @@ public class OpdaterHotelWindow extends Stage {
             pane.setHgap(20);
             pane.setVgap(10);
             pane.setGridLinesVisible(false);
+
+            // Textfields med informationer om hotel objektet - textfields henter informationer fra det allerede oprettede objekt og sætter disse ind.
 
             Label lblHotelNavn = new Label("Hotelnavn: ");
             pane.add(lblHotelNavn, 1, 1);
@@ -74,6 +80,7 @@ public class OpdaterHotelWindow extends Stage {
             txfPrisFor2.setEditable(true);
             txfPrisFor2.setText(String.valueOf(hotel.getPrisDouble()));
 
+            // Knapper der gør det muligt at gemme ændringer, slette objektet eller at lukke vinduet
 
             Button btnGem = new Button("Gem Ændringer");
             pane.add(btnGem, 1, 6);
@@ -87,6 +94,8 @@ public class OpdaterHotelWindow extends Stage {
             pane.add(btnExit, 3, 6);
             btnExit.setOnAction(event -> this.exitAction());
         }
+
+        // Metoder til knapperne
 
         private void exitAction(){
             this.hide();

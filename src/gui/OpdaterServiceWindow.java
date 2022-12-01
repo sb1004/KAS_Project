@@ -15,6 +15,10 @@ import java.time.LocalDate;
 
 public class OpdaterServiceWindow extends Stage {
 
+    /*
+     * Et pop-up vindue der giver mulighed for at opdatere et allerede oprettet service objekt
+     */
+
     public OpdaterServiceWindow(String title, Service service) {
         this.initStyle(StageStyle.UTILITY);
         this.initModality(Modality.APPLICATION_MODAL);
@@ -40,6 +44,8 @@ public class OpdaterServiceWindow extends Stage {
         pane.setVgap(10);
         pane.setGridLinesVisible(false);
 
+        // Textfields med informationer om service objektet - textfields henter informationer fra det allerede oprettede objekt og sætter disse ind.
+
         Label lblServiceNavn = new Label("Navn på service: ");
         pane.add(lblServiceNavn, 1, 1);
 
@@ -56,6 +62,7 @@ public class OpdaterServiceWindow extends Stage {
         txfServicePris.setEditable(true);
         txfServicePris.setText(String.valueOf(service.getPris()));
 
+        // Knapper der gør det muligt at gemme ændringer, slette objektet eller at lukke vinduet
 
         Button btnGem = new Button("Gem Ændringer");
         pane.add(btnGem, 1, 3);
@@ -70,24 +77,23 @@ public class OpdaterServiceWindow extends Stage {
         btnExit.setOnAction(event -> this.exitAction());
     }
 
+    // Metoder til knapperne
+
+
     private void exitAction(){
         this.hide();
     }
 
     private void gemAction() {
-
-
         Service service = this.service;
         String navn = txfServiceNavn.getText().trim();
         double pris = Double.parseDouble(txfServicePris.getText().trim());
 
         Controller.updateService(service, navn, pris);
         this.hide();
-
     }
 
     private void sletAction() {
-
         Service service = this.service;
         Controller.deleteService(service);
         this.hide();

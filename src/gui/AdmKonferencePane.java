@@ -22,6 +22,11 @@ import java.time.LocalDate;
 
 public class AdmKonferencePane extends GridPane {
 
+    /*
+     * Et pane som indeholder konferencer, hoteller og services og giver mulighed for at oprette, opdatere og tilknytte selvsamme objekter til hinanden
+     */
+
+
     private TextField txfKonferenceNavn, txfKonferenceAdresse, txfKonferencePris, txfAntalDage, txfHotelNavn, txfHotelAdresse, txfPrisFor1, txfPrisFor2, txfServiceNavn, txfServicePris;
 
     private ListView<Hotel> lvwHoteller;
@@ -37,7 +42,10 @@ public class AdmKonferencePane extends GridPane {
         this.setVgap(10);
         this.setGridLinesVisible(false);
 
+        //--------------------------------------------------------------------------------
         // Konference del af pane
+
+        // Textfields med informationer
 
         Label lblKonferenceNavn = new Label("Navn på konference: ");
         this.add(lblKonferenceNavn, 1, 1);
@@ -67,12 +75,13 @@ public class AdmKonferencePane extends GridPane {
         this.add(txfAntalDage, 2, 4);
         txfAntalDage.setEditable(true);
 
-
         Label lblKonferencePris = new Label("Pris for konference: ");
         this.add(lblKonferencePris, 1, 5);
 
         txfKonferencePris = new TextField();
         this.add(txfKonferencePris, 2, 5);
+
+        // Knapper med funktionalitet relaterende til konference
 
         Button btnOpretKonference = new Button("Opret Konference");
         this.add(btnOpretKonference, 1, 6);
@@ -83,6 +92,8 @@ public class AdmKonferencePane extends GridPane {
         btnOpdaterKonference.setOnAction(event -> this.opdaterKonferenceAction());
 
 
+        // Et listview af oprettede konferencer
+
         lvwKonferencer = new ListView<>();
         this.add(lvwKonferencer, 3, 1, 1, 5);
         lvwKonferencer.setPrefWidth(150);
@@ -92,9 +103,10 @@ public class AdmKonferencePane extends GridPane {
         ChangeListener<Konference> listener2 = (ov, oldKonference, newKonference) -> this.selectedKonferenceChanged();
         lvwKonferencer.getSelectionModel().selectedItemProperty().addListener(listener2);
 
-
+        //--------------------------------------------------------------------------------
         // Hotel del af pane
 
+        // Textfields med information om hotellet
 
         Label lblHotelNavn = new Label("Hotelnavn: ");
         this.add(lblHotelNavn, 1, 8);
@@ -124,6 +136,7 @@ public class AdmKonferencePane extends GridPane {
         this.add(txfPrisFor2, 2, 11);
         txfPrisFor2.setEditable(true);
 
+        // Listview af oprettede hoteller
 
         lvwHoteller = new ListView<>();
         this.add(lvwHoteller, 3, 8, 1, 5);
@@ -133,6 +146,8 @@ public class AdmKonferencePane extends GridPane {
 
         ChangeListener<Hotel> listener = (ov, oldHotel, newHotel) -> this.selectedHotelChanged();
         lvwHoteller.getSelectionModel().selectedItemProperty().addListener(listener);
+
+        // Knapper med funktionalitet relaterende til hotel
 
         Button btnOpretHotel = new Button("Opret Hotel");
         this.add(btnOpretHotel, 1, 13);
@@ -146,9 +161,10 @@ public class AdmKonferencePane extends GridPane {
         this.add(btnTilknytHotel, 3, 13);
         btnTilknytHotel.setOnAction(event -> this.tilknytHotelAction());
 
-
-
+        //--------------------------------------------------------------------------------
         // Service del af pane
+
+        // Textfields med information om service
 
         Label lblServiceNavn = new Label("Navn på service: ");
         this.add(lblServiceNavn, 1, 14);
@@ -164,6 +180,8 @@ public class AdmKonferencePane extends GridPane {
         this.add(txfServicePris, 2, 15);
         txfServicePris.setEditable(true);
 
+        // Listview af oprettede services
+
         lvwServices = new ListView<>();
         this.add(lvwServices, 3, 14, 1, 4);
         lvwServices.setPrefWidth(150);
@@ -172,6 +190,8 @@ public class AdmKonferencePane extends GridPane {
 
         ChangeListener<Service> listener3 = (ov, oldHotel, newHotel) -> this.selectedServiceChanged();
         lvwServices.getSelectionModel().selectedItemProperty().addListener(listener3);
+
+        // Knapper med funktionalitet relaterende til service
 
         Button btnOpretService = new Button("Opret Service");
         this.add(btnOpretService, 1, 18);
@@ -184,28 +204,11 @@ public class AdmKonferencePane extends GridPane {
         Button btnTilknytService = new Button("Tilknyt Service");
         this.add(btnTilknytService, 3, 18);
         btnTilknytService.setOnAction(event -> this.tilknytServiceAction());
-
     }
 
+    //--------------------------------------------------------------------------------
 
-    // Metoder
-
-    public void tilknytHotelAction() {
-
-        TilknytHotelWindow dia = new TilknytHotelWindow("Tilknyt Hotel", this.lvwHoteller.getSelectionModel().getSelectedItem());
-        dia.showAndWait();
-        updateListView();
-    }
-
-    public void tilknytServiceAction() {
-
-        TilknytServiceWindow dia = new TilknytServiceWindow("Tilknyt Service", this.lvwServices.getSelectionModel().getSelectedItem());
-        dia.showAndWait();
-        updateListView();
-
-    }
-
-
+    // Metoder til konference
 
     private void opretKonferenceAction() {
         String navn = txfKonferenceNavn.getText().trim();
@@ -220,14 +223,53 @@ public class AdmKonferencePane extends GridPane {
     }
 
     private void opdaterKonferenceAction() {
-
         OpdaterKonferenceWindow dia = new OpdaterKonferenceWindow("Opdater Konference", this.lvwKonferencer.getSelectionModel().getSelectedItem());
         dia.showAndWait();
         updateListView();
     }
-    
+
+    //--------------------------------------------------------------------------------
+
+    // Metoder til hotel
+
+    private void opretHotelAction() {
+        String navn = txfHotelNavn.getText().trim();
+        String adresse = txfHotelAdresse.getText().trim();
+        double prisEnkelt = Double.parseDouble(txfPrisFor1.getText().trim());
+        double prisDouble = Double.parseDouble(txfPrisFor2.getText().trim());
+
+        Controller.createHotel(navn, adresse, prisEnkelt, prisDouble);
+        updateListView();
+        rydFelter();
+    }
+
+    public void tilknytHotelAction() {
+        TilknytHotelWindow dia = new TilknytHotelWindow("Tilknyt Hotel", this.lvwHoteller.getSelectionModel().getSelectedItem());
+        dia.showAndWait();
+        updateListView();
+    }
+
     private void opdaterHotelAction() {
         OpdaterHotelWindow dia = new OpdaterHotelWindow("Opdater Hotel", this.lvwHoteller.getSelectionModel().getSelectedItem());
+        dia.showAndWait();
+        updateListView();
+    }
+
+    //--------------------------------------------------------------------------------
+
+    // Metoder til service
+
+    private void opretServiceAction() {
+        String navn = txfServiceNavn.getText().trim();
+        double pris = Double.parseDouble(txfServicePris.getText().trim());
+
+        Controller.createService(navn, pris);
+        updateListView();
+        rydFelter();
+    }
+
+    public void tilknytServiceAction() {
+        TilknytServiceWindow dia = new TilknytServiceWindow("Tilknyt Service", this.lvwServices.getSelectionModel().getSelectedItem());
         dia.showAndWait();
         updateListView();
     }
@@ -238,6 +280,9 @@ public class AdmKonferencePane extends GridPane {
         updateListView();
 
     }
+    //--------------------------------------------------------------------------------
+
+    // Metoder til changelistener
 
     private void selectedHotelChanged() {
         this.updateControls();
@@ -264,27 +309,10 @@ public class AdmKonferencePane extends GridPane {
         Service service = lvwServices.getSelectionModel().getSelectedItem();
     }
 
-    private void opretHotelAction() {
-        String navn = txfHotelNavn.getText().trim();
-        String adresse = txfHotelAdresse.getText().trim();
-        double prisEnkelt = Double.parseDouble(txfPrisFor1.getText().trim());
-        double prisDouble = Double.parseDouble(txfPrisFor2.getText().trim());
 
-        Controller.createHotel(navn, adresse, prisEnkelt, prisDouble);
-        updateListView();
-        rydFelter();
-    }
+    //--------------------------------------------------------------------------------
 
-    private void opretServiceAction() {
-
-        String navn = txfServiceNavn.getText().trim();
-        double pris = Double.parseDouble(txfServicePris.getText().trim());
-
-        Controller.createService(navn, pris);
-        updateListView();
-        rydFelter();
-
-    }
+    // Hjælpemetode der rydder alle felter på pane
 
     private void rydFelter() {
         txfKonferenceNavn.clear();

@@ -18,6 +18,11 @@ import javafx.stage.StageStyle;
 
 public class TilknytHotelWindow extends Stage {
 
+    /*
+     * Et pop-up vindue, som giver mulighed for at tilknytte et hotel objekt til et konference objekt
+     * pre: Konference objektet og Hotel objektet skal være konstrueret.
+     */
+
     public TilknytHotelWindow(String title, Hotel hotel) {
         this.initStyle(StageStyle.UTILITY);
         this.initModality(Modality.APPLICATION_MODAL);
@@ -43,6 +48,8 @@ public class TilknytHotelWindow extends Stage {
         pane.setVgap(10);
         pane.setGridLinesVisible(false);
 
+        // Label og listview af konferencer
+
         Label lblKonferenceNavn = new Label("Konferencer: ");
         pane.add(lblKonferenceNavn, 1, 1);
 
@@ -55,6 +62,7 @@ public class TilknytHotelWindow extends Stage {
         ChangeListener<Konference> listener2 = (ov, oldKonference, newKonference) -> this.selectedKonferenceChanged();
         lvwKonferencer.getSelectionModel().selectedItemProperty().addListener(listener2);
 
+        // Knapper med funktionalitet
 
         Button btnGem = new Button("Tilknyt Hotel");
         pane.add(btnGem, 1, 7);
@@ -69,12 +77,13 @@ public class TilknytHotelWindow extends Stage {
         btnExit.setOnAction(event -> this.exitAction());
     }
 
+    // Metoder der anvendes af knapperne
+
     private void exitAction(){
         this.hide();
     }
 
     private void tilknytHotelAction() {
-
         Hotel hotel = this.hotel;
         Controller.tilfoejHotelTilKonference(lvwKonferencer.getSelectionModel().getSelectedItem(), hotel);
         this.hide();
@@ -85,6 +94,8 @@ public class TilknytHotelWindow extends Stage {
         Controller.fjernHotelFraKonference(lvwKonferencer.getSelectionModel().getSelectedItem(), hotel);
         this.hide();
     }
+
+    // Metoder der anvendes af changelistener
 
     public void updateControls() {
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();

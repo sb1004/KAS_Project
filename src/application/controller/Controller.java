@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 public class Controller {
 
-    //Hotel
+    //--------------------------------------------------------------------------------
 
+    //Hotel
 
     public static Hotel createHotel (String navn, String adresse, double prisEnkelt, double prisDouble) {
         Hotel hotel = new Hotel(navn, adresse, prisEnkelt, prisDouble);
@@ -75,6 +76,9 @@ public class Controller {
     public static void fjernHotelFraKonference(Konference konference, Hotel hotel) {
         konference.removeHotel(hotel);
     }
+
+    //--------------------------------------------------------------------------------
+
 
     public static ArrayList<String> getDeltagere(Konference konference) {
         ArrayList<String> deltagere = new ArrayList<>();
@@ -194,6 +198,10 @@ public class Controller {
         udflugt.setDato(dato);
         udflugt.setPris(pris);
     }
+
+    //--------------------------------------------------------------------------------
+
+    // Objekter der er gemt i systemet
 
     public static void initStorage() {
         Konference Hav = Controller.createKonference("Hav og Himmel", "Odense Universitet", 1500, LocalDate.of(2022,05, 18), 3);

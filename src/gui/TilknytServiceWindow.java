@@ -17,6 +17,11 @@ import javafx.stage.StageStyle;
 
 public class TilknytServiceWindow extends Stage {
 
+    /*
+     * Et pop-up vindue, som giver mulighed for at tilknytte et service objekt til et hotel objekt
+     * pre: Hotel objektet og Service objektet skal være konstrueret.
+     */
+
     public TilknytServiceWindow(String title, Service service) {
         this.initStyle(StageStyle.UTILITY);
         this.initModality(Modality.APPLICATION_MODAL);
@@ -42,6 +47,8 @@ public class TilknytServiceWindow extends Stage {
         pane.setVgap(10);
         pane.setGridLinesVisible(false);
 
+        // Label og listview af hoteller
+
         Label lblHotelNavn = new Label("Hoteller: ");
         pane.add(lblHotelNavn, 1, 1);
 
@@ -55,6 +62,8 @@ public class TilknytServiceWindow extends Stage {
         lvwHoteller.getSelectionModel().selectedItemProperty().addListener(listener);
 
 
+        // Knapper med funktionalitet
+
         Button btnGem = new Button("Tilknyt Service");
         pane.add(btnGem, 1, 7);
         btnGem.setOnAction(event -> this.tilknytServiceAction());
@@ -67,6 +76,8 @@ public class TilknytServiceWindow extends Stage {
         pane.add(btnExit, 3, 7);
         btnExit.setOnAction(event -> this.exitAction());
     }
+
+    // Metoder der bruges af knapperne
 
     private void exitAction(){
         this.hide();
@@ -83,6 +94,8 @@ public class TilknytServiceWindow extends Stage {
         Controller.fjernServiceFraHotel(lvwHoteller.getSelectionModel().getSelectedItem(), service);
         this.hide();
     }
+
+    // Metoder der anvendes af changelistener
 
     public void updateControls() {
         Hotel hotel = lvwHoteller.getSelectionModel().getSelectedItem();
