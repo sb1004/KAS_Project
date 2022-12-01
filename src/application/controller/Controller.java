@@ -136,6 +136,8 @@ public class Controller {
 
     }
 
+    public static void tilfoejUdflugtTilLedsager(Ledsager ledsager, Udflugt udflugt) {ledsager.addUdflugt(udflugt);}
+
     //--------------------------------------------------------------------------------
 
     //Service
@@ -185,10 +187,10 @@ public class Controller {
     }
 
     public static void tilfoejLedsagerToTilmelding(Ledsager ledsager, Tilmelding tilmelding) {tilmelding.setLedsager(ledsager);}
-    //public static void tilfoejHotelOgServiceToTilmelding(Hotel hotel, Service service, Tilmelding tilmelding){tilmelding.setService(service);}
-    public static void tilfoejHotelTilTilmelding(Tilmelding tilmelding, Hotel hotel) {
-        tilmelding.setHotel(hotel);
-    }
+
+    public static void tilfoejServiceToTilmelding(Service service, Tilmelding tilmelding) {tilmelding.addService(service);}
+
+    public static void tilfoejHotelToTilmelding(Hotel hotel, Tilmelding tilmelding) {tilmelding.setHotel(hotel);}
 
     //--------------------------------------------------------------------------------
 

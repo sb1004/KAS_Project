@@ -2,20 +2,16 @@ package gui;
 
 import application.controller.Controller;
 import application.model.*;
+import application.model.Service;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import storage.Storage;
 
-import java.awt.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class TilmeldPane extends GridPane {
     private final Label lblFullName = new Label("Fulde navn:");
@@ -45,7 +41,7 @@ public class TilmeldPane extends GridPane {
     private final Label lblKonferencer = new Label("Vælg konference:");
     private final ListView<Konference> lvwKonferencer = new ListView();
 
-    private final Label lblTotalPrice = new Label("Samlet pris:");
+    private final Button btnSamletPris = new Button("Se samlet pris:");
     private final TextField txfTotalPrice = new TextField();
 
     private final Button btnTilmeld = new Button("Tilmeld");
@@ -65,12 +61,16 @@ public class TilmeldPane extends GridPane {
     private final Label lblHotels = new Label("Hoteller:");
     private final ListView<Hotel> lvwHotels = new ListView();
 
+    private final Button btnTilfoejHotel = new Button("Tilføj hotel");
+
     private final Label lblChooseServices = new Label("Vælg services:");
-    private final ListView<Service> lvwServices = new ListView();
+    private final ListView<Service> lvwServices = new ListView<>();
 
     private final Label lblNoHotel = new Label("Fravælg hotel:");
     private final CheckBox chbNoHotel = new CheckBox();
-    private final Button btnAdd = new Button("Tilføj hotel og services");
+    private final Button btnAddService = new Button("Tilføj service");
+
+    private Tilmelding tilmelding;
 
     private String ledsagerNavn;
 
@@ -129,15 +129,9 @@ public class TilmeldPane extends GridPane {
         this.add(lblKonferencer, 0, 16);
         this.add(lvwKonferencer, 1, 16, 1, 5);
         lvwKonferencer.getItems().setAll(Controller.getKonferencer());
+        lvwKonferencer.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> this.konferenceAction(newValue));
         lvwKonferencer.setPrefWidth(30);
         lvwKonferencer.setPrefHeight(100);
-
-        //Tilføjer et tekstfelt og en label angående totalprisen
-        txfTotalPrice.setEditable(false);
-        txfTotalPrice.setPrefWidth(200);
-        txfTotalPrice.setPrefHeight(29);
-        this.add(lblTotalPrice, 0, 25);
-        this.add(txfTotalPrice, 1, 25);
 
         //Tilføjer knappen 'Tilmeld' og tilføjer en aktion til knappen
         this.add(btnTilmeld, 3, 28);
@@ -147,7 +141,7 @@ public class TilmeldPane extends GridPane {
         this.add(lblCompanion, 10, 1);
         this.add(chbCompanionYes, 11, 1);
 
-        //Metoder, der umuliggør at skrive i feltet 'Navn på ledsager', hvis man ikke skal have ledsager med
+        //Metode, der umuliggør at skrive i feltet 'Navn på ledsager', hvis man ikke skal have ledsager med
         chbCompanionYes.setOnAction(event -> onCompanionSelected());
 
         //Tilføjer et tekstfelt og label om ledsager
@@ -161,37 +155,61 @@ public class TilmeldPane extends GridPane {
         //Tilføjer et listview af udflugter
         this.add(lblExcursion, 10, 3);
         this.add(lvwExcursion, 11, 3, 1, 5);
-        lvwExcursion.getItems().setAll(Controller.getUdflugter());
+        lvwExcursion.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         lvwExcursion.setPrefWidth(30);
         lvwExcursion.setPrefHeight(100);
 
-        //Checkbox til 'fravælg udflugter' til udflugter
+        //Tilføjer checkbox 'nej tak' til udflugter
         this.add(lblExcursionNoThankYou, 10, 9);
         this.add(chbExcursionNo, 11, 9);
+        chbExcursionNo.setOnAction(event -> fravaelgUdflugtSelected());
 
         //Tilføjer knappen 'tilføj ledsager'
         this.add(btnAddCompanion, 12, 10);
+        btnAddCompanion.setOnAction(event -> tilfoejLedsagerTilTilmeldingAction());
+
+        //Checkbox til nej tak til hoteller
+        this.add(lblNoHotel, 10, 12);
+        this.add(chbNoHotel, 11, 12);
+        chbNoHotel.setOnAction(event -> fravaelgHotelSelected());
 
         //Liste af hoteller
         this.add(lblHotels, 10, 14);
         this.add(lvwHotels, 11, 14, 1, 5);
-        lvwHotels.getItems().setAll(Controller.getHoteller());
+        lvwHotels.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue)-> this.serviceAction(newValue));
         lvwHotels.setPrefWidth(30);
         lvwHotels.setPrefHeight(100);
 
-        //CheckBox til 'Fravælg hotel' til hotel
-        this.add(lblNoHotel, 10, 21);
-        this.add(chbNoHotel, 11, 21);
+        //Tilføjer knappen Tilføj hotel
+        this.add(btnTilfoejHotel, 12, 20);
+        btnTilfoejHotel.setOnAction(event -> tilfoejHotelToTilmeldingAction());
 
         //Liste af services til hoteller
-        this.add(lblChooseServices, 10, 23);
-        this.add(lvwServices, 11, 23, 1, 5);
-        lvwServices.getItems().setAll(Controller.getServices());
+        this.add(lblChooseServices, 10, 22);
+        this.add(lvwServices, 11, 22, 1, 5);
         lvwServices.setPrefWidth(30);
         lvwServices.setPrefHeight(100);
 
-        //Tilføjer knappen 'Tilføj'
-        this.add(btnAdd, 12, 28);
+        //Tilføjer et tekstfelt og en label angående totalprisen
+        txfTotalPrice.setEditable(false);
+        txfTotalPrice.setPrefWidth(200);
+        txfTotalPrice.setPrefHeight(29);
+        this.add(btnSamletPris, 10, 28);
+        this.add(txfTotalPrice, 11, 28);
+        btnSamletPris.setOnAction(event -> seSamletPris());
+
+        //Tilføjer knappen 'Tilføj service'
+        this.add(btnAddService, 12, 28);
+        btnAddService.setOnAction(event -> tilfoejServiceToTilmelding());
+    }
+
+    public void konferenceAction(Konference newValue) {
+        lvwExcursion.getItems().setAll(newValue.getUdflugter());
+        lvwHotels.getItems().setAll(newValue.getHoteller());
+    }
+
+    public void serviceAction(Hotel newValue) {
+        lvwServices.getItems().setAll(newValue.getServices());
     }
 
     private void onCompanionSelected() {
@@ -199,6 +217,19 @@ public class TilmeldPane extends GridPane {
         txfCompanion.setDisable(!chbCompanionYes.isSelected());
         lvwExcursion.setEditable(chbCompanionYes.isSelected());
         lvwExcursion.setDisable(!chbCompanionYes.isSelected());
+    }
+
+    public void fravaelgHotelSelected() {
+        if (chbNoHotel.isSelected()) {
+            lvwHotels.setDisable(true);
+            lvwServices.setDisable(true);
+        }
+    }
+
+    public void fravaelgUdflugtSelected() {
+        if (chbExcursionNo.isSelected()) {
+            lvwExcursion.setDisable(true);
+        }
     }
 
     public void registerActionOnTilmeld() {
@@ -212,26 +243,33 @@ public class TilmeldPane extends GridPane {
         LocalDate afrejse = dapDeparture.getValue();
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
 
-        Controller.createTilmelding(ankomst, afrejse, foredragsholder, navn, adresse, by, land, telefonnummer, konference);
-        System.out.println(Storage.getTilmeldinger());
+        this.tilmelding = Controller.createTilmelding(ankomst, afrejse, foredragsholder, navn, adresse, by, land, telefonnummer, konference);
     }
 
-    public void TilfoejLedsagerTilTilmeldingAction(Tilmelding tilmelding) {
-        boolean ledsager = chbCompanionYes.isSelected();
-        if(ledsager) {
+    public void tilfoejLedsagerTilTilmeldingAction() {
+        boolean isLedsagerChecked = chbCompanionYes.isSelected();
+        if (isLedsagerChecked && !txfCompanion.getText().isEmpty()) {
             ledsagerNavn = txfCompanion.getText().trim();
+            Ledsager ledsager = Controller.createLedsager(txfCompanion.getText().trim());
+            Controller.tilfoejLedsagerToTilmelding(ledsager, tilmelding);
+            Controller.tilfoejUdflugtTilLedsager(ledsager, lvwExcursion.getSelectionModel().getSelectedItem());
         }
-        //Tilmelding tilmelding = this.tilmelding;
-        Udflugt udflugt = lvwExcursion.getSelectionModel().getSelectedItem();
-
-        //Controller.tilfoejLedsagerToTilmelding();
     }
 
-    public void tilfoejHotelOgServicesToTilmelding() {
+    public void tilfoejHotelToTilmeldingAction() {
         Hotel hotel = lvwHotels.getSelectionModel().getSelectedItem();
+
+        Controller.tilfoejHotelToTilmelding(hotel, tilmelding);
+    }
+
+    public void tilfoejServiceToTilmelding() {
         Service service = lvwServices.getSelectionModel().getSelectedItem();
 
-        //Controller.addHotelOgServices(hotel, service);  //Lav metode i controller
+        Controller.tilfoejServiceToTilmelding(service, tilmelding);
+    }
+
+    public void seSamletPris() {
+        txfTotalPrice.setText(String.valueOf(tilmelding.samletPris()));
     }
 
 }
