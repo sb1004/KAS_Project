@@ -127,6 +127,11 @@ public class Controller {
     public static void updateLedsager (Ledsager ledsager, String navn){
         ledsager.setNavn(navn);
     }
+
+    public static void addLedsager(Ledsager ledsager, Udflugt udflugt) {
+
+    }
+
     //--------------------------------------------------------------------------------
 
     //Service
@@ -175,6 +180,8 @@ public class Controller {
         tilmelding.setKonference(konference);
     }
 
+    public static void tilfoejLedsagerToTilmelding(Ledsager ledsager, Tilmelding tilmelding) {tilmelding.setLedsager(ledsager);}
+    //public static void tilfoejHotelOgServiceToTilmelding(Hotel hotel, Service service, Tilmelding tilmelding){tilmelding.setService(service);}
     public static void tilfoejHotelTilTilmelding(Tilmelding tilmelding, Hotel hotel) {
         tilmelding.setHotel(hotel);
     }
@@ -202,6 +209,10 @@ public class Controller {
     //--------------------------------------------------------------------------------
 
     // Objekter der er gemt i systemet
+
+    public static ArrayList<Udflugt> getUdflugter() {
+        return Storage.getUdflugter();
+    }
 
     public static void initStorage() {
         Konference Hav = Controller.createKonference("Hav og Himmel", "Odense Universitet", 1500, LocalDate.of(2022,05, 18), 3);
