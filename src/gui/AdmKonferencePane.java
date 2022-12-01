@@ -387,6 +387,7 @@ public class AdmKonferencePane extends GridPane {
         lvwKonferencer.getItems().setAll(Controller.getKonferencer());
         lvwHoteller.getItems().setAll(Controller.getHoteller());
         lvwServices.getItems().setAll(Controller.getServices());
+        lvwUdflugter.getItems().setAll(Controller.getUdflugter());
     }
 
     public void updateControls() {
@@ -413,5 +414,8 @@ public class AdmKonferencePane extends GridPane {
         txfServiceNavn.clear();
         txfServicePris.clear();
         dpStart.setValue(null);
+        txfUdflugtNavn.clear();
+        txfUdflugtPris.clear();
+        dpUdflugtStart.setValue(null);
     }
 }
