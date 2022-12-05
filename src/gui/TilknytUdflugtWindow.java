@@ -62,11 +62,11 @@ public class TilknytUdflugtWindow extends Stage {
 
         // Knapper med funktionalitet
 
-        Button btnGem = new Button("Tilknyt Service");
+        Button btnGem = new Button("Tilknyt Udflugt");
         pane.add(btnGem, 1, 7);
         btnGem.setOnAction(event -> this.tilknytUdflugtAction());
 
-        Button btnSlet = new Button("Fjern Service");
+        Button btnSlet = new Button("Fjern Udflugt");
         pane.add(btnSlet, 2, 7);
         btnSlet.setOnAction(event -> this.fjernUdflugtAction());
 
